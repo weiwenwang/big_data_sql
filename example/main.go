@@ -31,40 +31,29 @@ func doLeftJoin() {
 }
 
 func doNoJoin() {
+	t2 := noJoin.CreateNoJoinSqlObject("xingye_ts_snap.user_info")
+	t2.Field([]string{"DISTINCT user_id"})
 
-	t1 := noJoin.CreateNoJoinSqlObject("realtime.screen_monitors_user_3")
-	t1.Field([]string{"CASE  WHEN cate3 = '' THEN '未知' ELSE cate3 END", "sum(CAST(val AS signed)) AS val"})
+	t2.Where("app_id", "=", "wxafa45659f8ab8ff1")
+	t2.Where("SUBSTR(register_time, 1, 10)", ">=", "today-0")
+	t2.Where("SUBSTR(register_time, 1, 10)", ">=", "today-0")
 
-	t1.Where("app_id", "=", "wxafa45659f8ab8ff1")
-	t1.Where("platform", "=", "0")
-	t1.Where("cate1", "=", "screen_monitors_battle")
-	t1.Where("cate2", "=", "广东")
-	t1.GroupBy([]string{"a"})
-	t1.OrderBy([]string{"b"})
-	fmt.Println(t1.GetSql())
-	//t2 := noJoin.CreateNoJoinSqlObject("xingye_ts_snap.user_info")
-	//t2.Field([]string{"DISTINCT user_id"})
-	//
-	//t2.Where("app_id", "=", "wxafa45659f8ab8ff1")
-	//t2.Where("SUBSTR(register_time, 1, 10)", ">=", "today-0")
-	//t2.Where("SUBSTR(register_time, 1, 10)", ">=", "today-0")
-	//
-	//t3 := noJoin.CreateNoJoinSqlObject("xingye_ts_snap.user_info")
-	//t3.Field([]string{"DISTINCT user_id"})
-	//t3.Where("app_id", "=", "wxafa45659f8ab8ff1")
-	//t3.Where("channel_id", "in", []interface{}{"share_10009", "share_10001"})
-	//
-	//t := noJoin.CreateNoJoinSqlObject("event_db.event_wxafa45659f8ab8ff1")
-	//t.Field([]string{"user_id", "data_time", "'event_0' AS `event_id`"})
-	//
-	//t.Where("events", "in", []interface{}{"31133"})
-	//t.Where("STR_TO_DATE(CONCAT(y, '-', m, '-', d), '%Y-%m-%d')", ">=", "2021-01-20")
-	//t.Where("STR_TO_DATE(CONCAT(y, '-', m, '-', d), '%Y-%m-%d')", "<=", "2021-01-20")
-	//t.Where("value2", "in", []interface{}{"3"})
-	//t.Where("user_id", "in", t2.GetSql())
-	//t.Where("user_id", "in", t3.GetSql())
-	//
-	//t4 := noJoin.CreateNoJoinSqlObject("(" + t.GetSql() + ")")
-	//t4.Field([]string{"user_id", "funnel_count_alpha(UNIX_TIMESTAMP(data_time), 300, `event_id`, 'event_0,event_1,event_2') AS max_ordered_match_length"})
-	//fmt.Println(t4.GetSql())
+	t3 := noJoin.CreateNoJoinSqlObject("xingye_ts_snap.user_info")
+	t3.Field([]string{"DISTINCT user_id"})
+	t3.Where("app_id", "=", "wxafa45659f8ab8ff1")
+	t3.Where("channel_id", "in", []interface{}{"share_10009", "share_10001"})
+
+	t := noJoin.CreateNoJoinSqlObject("event_db.event_wxafa45659f8ab8ff1")
+	t.Field([]string{"user_id", "data_time", "'event_0' AS `event_id`"})
+
+	t.Where("events", "in", []interface{}{"31133"})
+	t.Where("STR_TO_DATE(CONCAT(y, '-', m, '-', d), '%Y-%m-%d')", ">=", "2021-01-20")
+	t.Where("STR_TO_DATE(CONCAT(y, '-', m, '-', d), '%Y-%m-%d')", "<=", "2021-01-20")
+	t.Where("value2", "in", []interface{}{"3"})
+	t.Where("user_id", "in", t2.GetSql())
+	t.Where("user_id", "in", t3.GetSql())
+
+	t4 := noJoin.CreateNoJoinSqlObject("(" + t.GetSql() + ")")
+	t4.Field([]string{"user_id", "funnel_count_alpha(UNIX_TIMESTAMP(data_time), 300, `event_id`, 'event_0,event_1,event_2') AS max_ordered_match_length"})
+	fmt.Println(t4.GetSql())
 }
