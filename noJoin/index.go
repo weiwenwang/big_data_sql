@@ -85,7 +85,7 @@ func (t *Table) GetWhere() (str string) {
 		return str
 	} else {
 		cutset := " and"
-		return strings.TrimPrefix(str, cutset)
+		return " where " + strings.TrimPrefix(str, cutset)
 	}
 }
 
