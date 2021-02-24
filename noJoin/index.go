@@ -49,7 +49,7 @@ func (t *Table) GetField() (str string) {
 	for _, v := range t.field {
 		str += "," + v
 	}
-	str = strings.TrimLeft(str, ",")
+	str = strings.TrimPrefix(str, ",")
 	return str
 }
 
@@ -84,8 +84,8 @@ func (t *Table) GetWhere() (str string) {
 	if str == "" {
 		return str
 	} else {
-		str = " where " + strings.TrimLeft(str, " and")
-		return str
+		cutset := " and"
+		return strings.TrimPrefix(str, cutset)
 	}
 }
 
@@ -102,8 +102,8 @@ func (t *Table) getOrder() (order_by string) {
 			order_by += "," + v
 		}
 	}
-	if strings.TrimLeft(order_by, ",", ) != "" {
-		order_by = " order by " + strings.TrimLeft(order_by, ",", )
+	if strings.TrimPrefix(order_by, ",", ) != "" {
+		order_by = " order by " + strings.TrimPrefix(order_by, ",", )
 	} else {
 		order_by = ""
 	}
@@ -114,8 +114,8 @@ func (t *Table) getGroupBy() (str string) {
 	for _, v := range t.group_by {
 		str += "," + v
 	}
-	if strings.TrimLeft(str, ",", ) != "" {
-		str = " group by " + strings.TrimLeft(str, ",", )
+	if strings.TrimPrefix(str, ",", ) != "" {
+		str = " group by " + strings.TrimPrefix(str, ",", )
 	} else {
 		str = ""
 	}
