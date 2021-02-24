@@ -24,6 +24,13 @@ func CreateNoJoinSqlObject(table string) (t Table) {
 	return t
 }
 
+func (t *Table) GroupBy(a []string) {
+	t.group_by = append(t.group_by, a...)
+}
+
+func (t *Table) OrderBy(a []string) {
+	t.order_by = append(t.order_by, a...)
+}
 
 func (t *Table) Where(a string, b string, c interface{}) {
 	t.where = append(t.where, []interface{}{a, b, c})
@@ -34,7 +41,7 @@ func (t *Table) Field(obj []string) {
 }
 
 func (t *Table) GetSql() (s string) {
-	s = "select " + t.GetField() + " from " + t.Db_Table_Name + t.GetWhere()
+	s = "select " + t.GetField() + " from " + t.Db_Table_Name + t.GetWhere() + t.getGroupBy() + t.getOrder()
 	return s
 }
 
@@ -85,4 +92,32 @@ func (t *Table) GetWhere() (str string) {
 func IsNum(s string) bool {
 	_, err := strconv.ParseFloat(s, 64)
 	return err == nil
+}
+
+func (t *Table) getOrder() (order_by string) {
+	for k, v := range t.order_by {
+		if k == 0 {
+			order_by += "," + v
+		} else {
+			order_by += "," + v
+		}
+	}
+	if strings.TrimLeft(order_by, ",", ) != "" {
+		order_by = " order by " + strings.TrimLeft(order_by, ",", )
+	} else {
+		order_by = ""
+	}
+	return order_by
+}
+
+func (t *Table) getGroupBy() (str string) {
+	for _, v := range t.group_by {
+		str += "," + v
+	}
+	if strings.TrimLeft(str, ",", ) != "" {
+		str = " group by " + strings.TrimLeft(str, ",", )
+	} else {
+		str = ""
+	}
+	return str
 }
