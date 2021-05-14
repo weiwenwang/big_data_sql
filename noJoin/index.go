@@ -60,9 +60,28 @@ func (t *Table) GetWhere() (str string) {
 			case string:
 				str += " and " + v[0].(string) + " in " + "(" + v[2].(string) + ")"
 			case []interface{}:
+				if len(v[2].([]interface{})) == 0 {
+					continue
+				}
 				one := ""
 				for _, vv := range v[2].([]interface{}) {
 					one += ",'" + vv.(string) + "'"
+				}
+				str += " and " + v[0].(string) + " in " + "(" + one[1:] + ")"
+			case []string:
+				if len(v[2].([]string)) == 0 {
+					continue
+				}
+				one := ""
+				fmt.Println("v[2]: ", v[2])
+				for _, vv := range v[2].([]string) {
+					one += ",'" + vv + "'"
+				}
+				str += " and " + v[0].(string) + " in " + "(" + one[1:] + ")"
+			case []int:
+				one := ""
+				for _, vv := range v[2].([]int) {
+					one += "," + strconv.Itoa(vv) + ""
 				}
 				str += " and " + v[0].(string) + " in " + "(" + one[1:] + ")"
 			case bool:
